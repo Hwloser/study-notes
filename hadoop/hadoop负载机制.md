@@ -39,4 +39,37 @@ namenode在启动的时候会存储一些元数据。元数据一般分为三部
 
 - 存储在内存中
 
-内存中的元数据
+内存中的元数据，读写快，缺点是服务器宕机，内存中的全部数据将会丢失。
+
+- 存储在磁盘中
+
+存储在磁盘中的元数据，可以确保数据持久化。但是每次进行读写操作就会进行磁盘IO，而磁盘的随机读写性能相较于内存读写性能较低。
+
+```txt
+hdfs dfsadmin -safemode enter # 进入安全模式
+hdfs dfsadmin -safemode leave # 离开安全模式
+hdfs dfsadmin -safemode get # 获取当前是否处于安全模式，如果处于则返回on，否则返回off
+hdfs dfsadmin -safemode wait #等待自行退出安全模式
+```
+
+## 机架策略
+
+### 负载均衡
+
+```xml
+<property>
+  <name>dfs.datanode.balance.bandwidthPerSec</name>
+  <value>1048576</value>
+  <description>
+        Specifies the maximum amount of bandwidth that each datanode
+        can utilize for the balancing purpose in term of
+        the number of bytes per second.
+  </description>
+</property>
+```
+
+hadoop 还提供了bash用以手动的进行负载均衡。
+
+```reStructuredText
+start-balancer.sh -t 10% 
+```
