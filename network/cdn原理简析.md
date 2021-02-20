@@ -10,7 +10,7 @@ CDN（Content Delivery Network，内容分发网络）
 
 ## dns 解析流程
 
-![cdn](B:\study-notes\java\illustration\cdn.png)
+![cdn](cdn%E5%8E%9F%E7%90%86%E7%AE%80%E6%9E%90.assets/cdn.png)
 
 1. 客户端首先会在本机的hosts文件和hosts缓存中查找该域名对应的IP地址；
 2. 如果本机中没有此信息，则会到我们的`本地DNS`进行询问该域名对应的IP地址；
@@ -43,4 +43,4 @@ CDN（Content Delivery Network，内容分发网络）
 
 如图所示是通过CDN进行请求响应的过程图。通过图中可以看出，在DNS解析域名时新增了一个`全局负载均衡系统（GSLB）`，GSLB的主要功能是根据用户的本地DNS的IP地址判断用户的位置，筛选出距离用户较近的`本地负载均衡系统（SLB）`，并将该SLB的IP地址作为结果返回给本地DNS。SLB主要负责判断`缓存服务器集群`中是否包含用户请求的资源数据，如果缓存服务器中存在请求的资源，则根据缓存服务器集群中节点的健康程度、负载量、连接数等因素筛选出最优的缓存节点，并将HTTP请求重定向到最优的缓存节点上。
 
-![cdn_cache](B:\study-notes\java\illustration\cdn_cache.jpeg)
+![cdn_cache](cdn%E5%8E%9F%E7%90%86%E7%AE%80%E6%9E%90.assets/cdn_cache.jpeg)

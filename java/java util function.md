@@ -2,7 +2,7 @@
 
 ## summary
 
-![function导图](B:\study-notes\java\illustration\functional_interface.png)
+![function导图](java%20util%20function.assets/functional_interface.png)
 
 1. Function：接收参数，并返回结果。
 

@@ -4,7 +4,7 @@
 
 定义：
 
-![](B:\study-notes\java\illustration\future_structure.png)
+![](java%20future.assets/future_structure.png)
 
 接口定义行为，我们通过上图可以看到实现Future接口的子类会具有哪些行为：
 
