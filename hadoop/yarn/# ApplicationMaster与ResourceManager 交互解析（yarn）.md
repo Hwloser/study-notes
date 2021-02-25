@@ -1,0 +1,21 @@
+# ApplicationMaster与ResourceManager 交互解析（yarn）
+
+在yarn application运行期间，applicationMaster相当于这个applicaiton的管理者，负责监控、管理这个application的所有attempt。在cluster中各个节点上的具体运行，同时负责向yarn resourceManager申请、返还资源。applicationMaster与resourceManager之间的通信是整个yarn application从提交到运行的核心部分，是yarn对整个集群进行动态管理的根本步骤，yarn的动态性，就是来源于多个Application的`ApplicationMaster`**动态**地和`ResourceManager`进行沟通，不断地申请、释放、再申请、再释放资源的过程。
+
+在整个RPC通信过程中，applicationMaster充当RPC client的role，而resourceManager充当RPC Server的role。
+
+`ResourceManager`是委托`ApplicationMasterService`来代替自己进行资源管理的。
+
+有关Yarn的模块化设计，`ResourceManager`本身被抽象为一个`Service`，并且它是由很多个子`Service`组成，`ApplicationMasterService`就是其中一个。
+
+HA模式下，两台ResourceManager启动的时候，都是直接进入Standby模式，然后再去竞争以获取Active的角色和身份。非HA模式下，只有一台ResourceManager，自然是直接进入Active模式。
+
+ApplicationMaster心跳和资源申请、释放接口allocate()是Yarn的资源申请、释放动态过程的最关键接口，该接口的主要职责和功能包括：
+
+- 心跳： 周期性通过allocate接口告知ResourceManager自己依然是alive的状态。
+- 资源请求：通过一个或者多个ResourceRequest向ResourceManager发起资源请求。
+- 黑名单列表：向ResourceManager提供黑名单列表，ResourceManager收到该列表以后，不会向ApplicationMaster分配黑名单列表机器上的任何资源。
+- 服务器返回：ResourceManager会在响应信息里面告知AppliationMaster关于已经分配的container信息、AplicationMaster可以根据返回的信息决定如何使用已经分配的资源以及如何决定以后的资源申请)的作用。
+
+一个Application的每个应用被分布到不同的节点执行，ResourceManager不会直接和所有节点上的所有attempt通信，而是由ApplicationMaster与自己的所有attempt通信，把信息通过allocate()接口发送给ApplicationMasterService(即ResourceManager)，ResourceManager则维护了所有Application、Container、attempt信息，通过心跳，RM端维护的信息虽然肯定稍有延迟，但是却能不断被更新和同步。
+
