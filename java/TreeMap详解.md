@@ -18,5 +18,65 @@ TreeMap是基于红黑树的实现，也是记录了key-value的映射关系，�
 5. **Cloneable 接口：** 实现了该接口的类可以显示的调用Object.clone()方法，合法的对该类实例进行字段复制，如果没有实现Cloneable接口的实例上调用Obejct.clone()方法，会抛出CloneNotSupportException异常。正常情况下，实现了Cloneable接口的类会以公共方法重写Object.clone()。
 6. **Serializable 接口：** 实现了该接口标示了类可以被序列化和反序列化。
 
+### put method浅析
 
+```
+Associates the specified value with the specified key in this map.
+If the map previously contained a mapping for the key, the old
+value is replaced.
+```
 
+```java
+public V put(K key, V value) {
+    Entry<K,V> t = root;
+    if (t == null) {
+        compare(key, key); // type (and possibly null) check
+
+        root = new Entry<>(key, value, null);
+        size = 1;
+        modCount++;
+        return null;
+    }
+    int cmp;
+    Entry<K,V> parent;
+    // split comparator and comparable paths
+    Comparator<? super K> cpr = comparator;
+    if (cpr != null) {
+        do {
+            parent = t;
+            cmp = cpr.compare(key, t.key);
+            if (cmp < 0)
+                t = t.left;
+            else if (cmp > 0)
+                t = t.right;
+            else
+                return t.setValue(value);
+        } while (t != null);
+    }
+    else {
+        if (key == null)
+            throw new NullPointerException();
+        @SuppressWarnings("unchecked")
+            Comparable<? super K> k = (Comparable<? super K>) key;
+        do {
+            parent = t;
+            cmp = k.compareTo(t.key);
+            if (cmp < 0)
+                t = t.left;
+            else if (cmp > 0)
+                t = t.right;
+            else
+                return t.setValue(value);
+        } while (t != null);
+    }
+    Entry<K,V> e = new Entry<>(key, value, parent);
+    if (cmp < 0)
+        parent.left = e;
+    else
+        parent.right = e;
+    fixAfterInsertion(e);
+    size++;
+    modCount++;
+    return null;
+}
+```
