@@ -78,8 +78,24 @@ git log
 git checkout -b feature1
 ```
 
+<<<<<<< HEAD
 ![feature](./picture\git_rebase_1-1615452483331.png)
 
 2. 这时候，你的同事完成了一次 hotfix，并合并入了 master 分支，此时 master 已经领先于你的 feature1 分支了：
 
 ![](./picture\git2.png)
+=======
+![git1](./picture\git_rebase_1-1615452483331.png)
+
+2. 这时候，你的同事完成了一次 hotfix，并合并入了 master 分支，此时 master 已经领先于你的 feature1 分支了：
+
+![git2](./picture\git2.png)
+
+3. 恰巧，我们想要同步 master 分支的改动，首先想到了 merge，执行：
+
+```bash
+git merge master
+```
+
+![](picture/git3.png)
+>>>>>>> 7b6a54e (1. 提交git 相关的文案)
