@@ -25,3 +25,11 @@
 
 - 没有`if`，`else`，`do while`等语句，没有复制语句，仅支持逻辑表达式、算术表达式、三元表达式和正则匹配
 - 没有位运算
+
+## <font color="green">依赖jars packages</font>
+
+**commons-beanutils和commons-logging。**
+
+
+
+
