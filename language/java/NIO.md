@@ -43,3 +43,18 @@ Java NIO Channel和stream非常的形似。
 - channel可以异步写
 - channel总是基于buffer来读写的
 
+### <font color="green">容量位置和限制</font>
+
+#### 容量（capacity）
+
+作为一块内存，buffer有一个固定的大小，叫做capacity（容量）。也就是说，最多只能写入 capacity大小的数据。一旦buffer写满了就需要清空一度的数据一边下次继续写入新的数据。
+
+#### 位置（position）
+
+当写入数据到buffer的时候需要从一个确定的位置开始，默认初始化这个position为0。一旦写入了数据，那么position的值就会只想数据之后的单元，position最大可以指定到 `capacity - 1`.
+
+#### 上限（limit）
+
+在**写模式**，limit的含义是所能写入的最大容量，它等同于buffer的capacity。
+
+一旦切换到**读模式**，limit则能代表所能读取的最大数据量，它的值等同于写模式下的position的位置。
