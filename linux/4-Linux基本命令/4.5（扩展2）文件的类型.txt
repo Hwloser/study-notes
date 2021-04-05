@@ -1,0 +1,18 @@
+修改文件/目录的权限：chmod
+
+示例：修改/test下的aaa.txt的权限为属主有全部权限，属主所在的组有读写权限， 其他用户只有读的权限
+
+chmod u=rwx,g=rw,o=r aaa.txt
+
+上述示例还可以使用数字表示：
+
+chmod 764 aaa.txt
+
+补充一个比较常用的东西:
+
+假如我们装了一个zookeeper，我们每次开机到要求其自动启动该怎么办？
+
+1、新建一个脚本zookeeper
+2、为新建的脚本zookeeper添加可执行权限，命令是:chmod +x zookeeper
+3、把zookeeper这个脚本添加到开机启动项里面，命令是： chkconfig --add zookeeper
+4、如果想看看是否添加成功，命令是：chkconfig --list

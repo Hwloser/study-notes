@@ -1,0 +1,2 @@
+## BitMap algorithm
+
