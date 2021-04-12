@@ -49,3 +49,4 @@ implicit def <ConversionName>(<argumentName>: OriginalType): ViewType
 - 隐式类不可以是`case class`。（`case class`会自动生成伴生对象）
 - 同一作用域内不可有与之同名的标识符。
 - 注意二义性。
+
